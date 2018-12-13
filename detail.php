@@ -1,37 +1,24 @@
 <?php
-include('autoloader.php');
-
-$product_class = new ProductDetail();
-$products = $product_class -> getProducts();
-
+include('vendor/autoload.php');
+//generate navigation
+include('includes/navigation.inc.php');
+//generate product
+use aitsyd\ProductDetail;
+$detail_class = new ProductDetail();
+$product = $detail_class -> getProductById();
+//set page_title to be capitalised
+$page_title = ucwords($product['name']);
+$loader = new Twig_Loader_Filesystem('templates');
+$twig = new Twig_Environment($loader, array(
+    //'cache' => 'cache'
+));
+$template = $twig -> load('detail.twig');
+echo $template -> render( 
+        array(
+            'product' => $product, 
+            'pagetitle' => $page_title,
+            'pages' => $pages,
+            'currentPage' => $currentPage
+        )
+    );
 ?>
-<!doctype html>
-<html>
-    <head>
-        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
-        <script src="node_modules/jquery/dist/jquery.js"></script>
-        <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="node_modules/pooper.js/dist/umd/popper.js"></script>
-    </head>
-    
-    <!-- how to comment for html -->
-    
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <h1><?php echo $product[0]['name'] ?></h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    
-                </div>
-                <div class="col-md-6">
-                    <?php ?>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
