@@ -17,12 +17,33 @@ class Validator{
         }
         //check special characters
         if(ctype_alnum($username) == false){
-            array_push($errors, 'only alphanumeric characters')
+            array_push($errors, 'only alphanumeric characters');
         }
         //check for html tags
         if(strlen( strip_tags($username) ) !== strlen($username) ){
-            array_push($errors, 'cannot contain HTML')
+            array_push($errors, 'cannot contain HTML');
         }
+        //check error
+        if(count($errors) > 0 ){
+            $result['success'] = false;
+            $result['errors'] = $errors;
+        }
+        else{
+            $result['success'] = true;
+            
+        }
+        return $result;
+    }
+    
+    public static function password($password){
+        $errors = array();
+        if(strlen($password) < 6){
+            array_push($errors,'minimum 6 characters');
+        }
+        if(ctype_alnum($password)){
+            array_push($errors,'only alphanumeric characters');
+        }
+        
         //check error
         if(count($errors) > 0 ){
             $result['success'] = false;
